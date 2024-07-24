@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    volumes:
+      - chromadb-data:/var/lib/chromadb/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma # this is the default path, change it as needed
+      - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-TRUE}
+      - CHROMA_SERVER_CORS_ALLOW_ORIGINS=["http://localhost:8088"]
+    ports:
+      - 8099:8000
+  chroma-ui:
+    build: ./
+    image: chroma-ui
+    ports:
+      - 8088:3000
+
+volumes:
+  chromadb-data:
